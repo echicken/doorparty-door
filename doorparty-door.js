@@ -24,6 +24,8 @@ function initProgram() {
 	).option(
 		'-g, --game <code>', 'Optional code of game to launch.'
 	).option(
+		'-s, --settings <file>', 'Optional path to settings.ini.'
+	).option(
 		'-p, --password <password>', 'Optional per-user RLOGIN password.'
 	).option(
 		'--debug', 'Debug logging, outputs to dpc.log.'
@@ -162,7 +164,9 @@ function startTunnel(cfg, sock, d32, cb) {
 function main() {
 	initProgram();
 	var door32 = loadDoor32(program.dropfile);
-	var settings = loadSettings(path.join(__dirname, './settings.ini'));
+	var settings = loadSettings(
+		program.settings || path.join(__dirname, './settings.ini')
+	);
 	var socket = getSocket(door32.connectionHandle);
 	startTunnel(settings, socket, door32, onTunnel);
 }
